@@ -36,3 +36,9 @@ FROM Transactions t
 JOIN Categories c ON t.category_id = c.category_id
 WHERE t.amount > 1000
 ORDER BY t.amount DESC;
+
+
+SELECT A.months,A.SUMM as Budget,B.op as Expenses, A.SUMM - B.op AS DIFF FROM (SELECT months,SUM(amount) AS SUMM FROM Budgets GROUP BY months) A 
+JOIN 
+(SELECT DATENAME(MONTH,amount_date)AS m,SUM(amount) as op 
+ FROM Transactions WHERE type ='Expense' GROUP BY DATENAME(MONTH,amount_date))B ON A.months=B.m
