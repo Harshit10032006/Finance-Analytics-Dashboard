@@ -1,4 +1,5 @@
---Just for checking data 
+--Just for checking data  SQL Codes 
+
 
 SELECT * FROM Transactions
 SELECT * FROM Categories
