@@ -1,1 +1,38 @@
+--Just for checking data 
 
+SELECT * FROM Transactions
+SELECT * FROM Categories
+
+
+SELECT  CASE WHEN MONTH(amount_date)= 1 THEN 'Jan' 
+             ELSE 'FEB'end  as monthS,
+             SUM(Amount) totalexpences FROM Transactions
+             GROUP BY MONTH(amount_date)
+
+SELECT TOP 5 c.category_name,SUM(Amount) AS Total_amount FROM Categories c
+  JOIN Transactions t ON c.category_id=t.category_id
+  GROUP BY (c.category_name) 
+  ORDER BY SUM(Amount) DESC
+
+
+SELECT EX.TOTALex-Inn.TOTAlin AS 'EX-INn'  FROM (SELECT SUM(Amount) AS TOTALex
+FROM Categories c JOIN Transactions t ON c.category_id=t.category_id WHERE category_type = 'Expense') EX , 
+(SELECT SUM(Amount) AS TOTAlin FROM Categories c JOIN Transactions t ON c.category_id=t.category_id WHERE category_type ='Income') Inn 
+
+
+SELECT DATENAME(WEEKDAY,amount_date) Datee,AVG(Amount) as Averageper_dayy FROM Transactions
+WHERE type ='Expense' GROUP BY  DATENAME(WEEKDAY,amount_date) ORDER BY AVG(Amount) DESC
+
+
+SELECT Amount FROM Transactions WHERE Amount > 1000
+
+SELECT 
+    t.transaction_id,
+    t.amount_date,
+    c.category_name,
+    t.amount,
+    t.descriptions
+FROM Transactions t
+JOIN Categories c ON t.category_id = c.category_id
+WHERE t.amount > 1000
+ORDER BY t.amount DESC;
