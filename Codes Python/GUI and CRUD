@@ -68,7 +68,7 @@ class GUI:
         tk.Label(input_frame,text="Table Name:",font=("Segoe UI", 13),fg="#eeeeee",bg="#1e1e1e").grid(row=0, column=0, padx=10)
         self.tbentry = tk.Entry(input_frame,width=40, font=("Consolas", 11), bg="#2b2b2b", fg="#00ffcc", insertbackground="white", relief="flat" )
         self.tbentry.grid(row=0, column=1, padx=5)
-        readbutton = tk.Button(input_frame,text="Read Table",command=self.read_table,font=("Segoe UI", 11, "bold"),bg="#00adb5",      fg="#ffffff",activebackground="#007a7c",activeforeground="white",relief="flat",padx=10,pady=5)
+        readbutton = tk.Button(input_frame,text="Read Table",command=self.read_table,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#007a7c",activeforeground="white",relief="flat",padx=10,pady=5)
         readbutton.grid(row=0, column=2, padx=15)
         text_frame = tk.Frame(root, bg="#1e1e1e")
         text_frame.pack(padx=10, pady=10, fill="both", expand=True)
