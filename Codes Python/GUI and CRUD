@@ -1,1 +1,82 @@
+import pyodbc
+import pandas as pd 
+import numpy as np 
+import tkinter as tk
+from tkinter import *
+
+conn = pyodbc.connect(
+    'DRIVER={ODBC Driver 17 for SQL Server};'
+    'SERVER=harshit\\SQLEXPRESS;'
+    'DATABASE=Finance_DB;'
+    'Trusted_Connection=yes;'
+)
+cursor = conn.cursor()
+
+class manager :
+    def __init__(self):
+        pass
+
+
+    def read_tables(self,table):
+        try:
+          que=f"SELECT * FROM {table}"
+          df=pd.read_sql(que,conn)
+          print(df.to_string(index=False))
+          return df
+        except Exception as ee:
+           print("Error->",ee)
+            
+
+    
+    def insert_tables(self,table,columns,values):
+        try:
+            x=",".join(['?']*len(values))
+            cursor.execute(f"INSERT INTO {table} ({','.join(columns)}) VALUES({x})",values)
+            conn.commit()
+        except Exception as ee:
+            print("Error->",ee)
+
+    
+
+    # FUNCTION : UPDATE DATA IN TABLES ->
+    def update_Tables(self,table,column,value,column2,chvalue):
+        try:
+            cursor.execute(f"UPDATE {table} SET {column} =? WHERE {column2} = ? ",(value,chvalue))
+            conn.commit()
+        except Exception as err:
+            print(" Error->",err)
+            
+
+    # FUNCTION : DELETION OF DATA IN TABLES ->
+    def delete_Rows(self,table,column,value):
+        try:
+            cursor.execute(f"DELETE FROM {table} WHERE {column}=?",(value,))
+            conn.commit()
+        except Exception as err:
+            print(" Error->",err)
+
+
+
+class GUI:
+    def __init__(self,root):
+        self.root= root
+        self.root.geometry("1200x600")
+        self.root.title("Finance Tracker")
+        self.base=manager()
+        tk.Label(root,text='Dashboard',font =("Arial",22,"bold"),fg="white",bg="black").pack()
+        tk.Label(root,text="Table Name -> ",font=("Arial",15)).pack()
+        self.tbentry =  tk.Entry(root,width=40)
+        self.tbentry.pack()
+        tk.Button(root,text='Read Table :  ',command=self.read_table).pack()
+        self.output = tk.Text(root,width=125,height=30)
+        self.output.pack(padx=10)
+
+    def read_table(self):
+        table=self.tbentry.get()
+        data=self.base.read_tables(table)
+        self.output.delete(1.0,tk.END)
+        if type(data)==pd.DataFrame:    # Can use isinstance Here better ------
+            self.output.insert(tk.END,data.to_string(index=False))
+        else :
+            self.output.insert(tk.END,"!!!! ERROR !!!!")
 
