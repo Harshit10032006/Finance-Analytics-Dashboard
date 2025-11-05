@@ -28,7 +28,7 @@ This Finance Tracker application
 
 - *Language*: Python 
 - *Database*: Microsoft SQL Server
-- *GUI Framework*: Tkinter (ttk)
+- *GUI Framework*: Tkinter (tk)
 - *Libraries*: Pandas, pyodbc, Matplotlib, Seaborn
 
 
