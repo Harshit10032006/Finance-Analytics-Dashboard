@@ -5,7 +5,7 @@ A GUI desktop application for managing personal finances, built with Python, SQL
 
 
 This Finance Tracker application 
-## ✨ Features
+## Features
 
 ### Current Features 
 - *CRUD Operations*: Create, Read, Update, and Delete financial records
