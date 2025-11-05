@@ -43,7 +43,7 @@ BEGIN
         TRUNCATE TABLE Users;
 
     BULK INSERT Users
-    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Users_Indian.csv'
+    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Users_Indian.csv' -- Path of the csv file (Users_Indian.csv
     WITH (
         FIRSTROW = 2,
         FIELDTERMINATOR = ',',
@@ -55,7 +55,7 @@ BEGIN
         TRUNCATE TABLE Accounts;
 
     BULK INSERT Accounts
-    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Accounts_Indian.csv'
+    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Accounts_Indian.csv'--Path of the csv file Accouts_Indian.csv
     WITH (
         FIRSTROW = 2,
         FIELDTERMINATOR = ',',
@@ -66,7 +66,7 @@ BEGIN
         TRUNCATE TABLE Categories;
 
     BULK INSERT Categories
-    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Categories_Indian.csv'
+    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Categories_Indian.csv'--Path of the csv file Categories_Indian.csv
     WITH (
         FIRSTROW = 2,
         FIELDTERMINATOR = ',',
@@ -77,7 +77,7 @@ BEGIN
         TRUNCATE TABLE Transactions;
 
     BULK INSERT Users
-    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Transactions_Indian.csv'
+    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Transactions_Indian.csv'--Path of the csv file Transactions.csv
     WITH (
         FIRSTROW = 2,
         FIELDTERMINATOR = ',',
@@ -88,7 +88,7 @@ BEGIN
         TRUNCATE TABLE Budgets;
 
     BULK INSERT Budgets
-    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Budgets_Indian.csv'
+    FROM 'C:\Users\kholi\Downloads\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\Budgets_Indian.csv'--Path of the csv file Budgets_Indian.csv
     WITH (
         FIRSTROW = 2,
         FIELDTERMINATOR = ',',
