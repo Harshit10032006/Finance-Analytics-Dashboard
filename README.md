@@ -13,9 +13,8 @@ This Finance Tracker application
 - *User-Friendly GUI*: Dark-themed interface built with Tkinter
 - *Multi-table Support*: Manage Users, Accounts, Categories, Transactions, and Budgets
 - *Real-time Data Display*: View database records instantly
-- *Error Handling*: Comprehensive exception handling and user feedback
 - *Data Visualization*: Interactive charts and graphs using Matplotlib
-- *CSV Import*: Bulk import transactions from bank statements
+- *CSV Import*: Bulk import data in tables
 
   ### Yet to be added
 
