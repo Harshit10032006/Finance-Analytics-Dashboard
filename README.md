@@ -14,12 +14,14 @@ This Finance Tracker application
 - *Multi-table Support*: Manage Users, Accounts, Categories, Transactions, and Budgets
 - *Real-time Data Display*: View database records instantly
 - *Error Handling*: Comprehensive exception handling and user feedback
+- *Data Visualization*: Interactive charts and graphs using Matplotlib
+- *CSV Import*: Bulk import transactions from bank statements
 
   ### Yet to be added
 
-- 📊 *Data Visualization*: Interactive charts and graphs using Matplotlib
+
 - 📈 *Financial Analytics*: Monthly reports, spending trends, savings rate
-- 📁 *CSV Import/Export*: Bulk import transactions from bank statements
+- 
 - 💰 *Budget Tracking*: Set budgets and monitor spending vs. targets
 - 🔍 *Advanced Filtering*: Search and filter transactions by date, category, amount
 - 📄 *PDF Reports*: Generate monthly financial reports
