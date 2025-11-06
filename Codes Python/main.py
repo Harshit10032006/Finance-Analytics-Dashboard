@@ -2,9 +2,10 @@ import pyodbc
 import pandas as pd 
 import tkinter as tk
 from tkinter import *
-
+import matplotlib.pyplot as plt
+from chart import Chart
 conn = pyodbc.connect(
-    'DRIVER={ODBC Driver 17 for SQL Server};'  # Enter your DRIVER name and server name 
+    'DRIVER={ODBC Driver 17 for SQL Server};'
     'SERVER=harshit\\SQLEXPRESS;'
     'DATABASE=Finance_DB;'
     'Trusted_Connection=yes;'
@@ -33,12 +34,21 @@ class manager :
             conn.commit()
         except Exception as ee:
             print("Error->",ee)
+
     def update_Tables(self,table,column,value,column2,chvalue):
         try:
             cursor.execute(f"UPDATE {table} SET {column} =? WHERE {column2} = ? ",(value,chvalue))
             conn.commit()
         except Exception as err:
             print(" Error->",err)
+
+    def bulk_insert(self,table,path):
+        try:
+          que=f'''BULK INSERT {table} FROM '{path}' WITH (FIRSTROW=2,FIELDTERMINATOR=',',TABLOCK);'''
+          cursor.execute(que)
+          conn.commit()
+        except Exception as ee :
+          print("Error->", ee)
             
 
     
@@ -55,13 +65,14 @@ class GUI:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1200x700")
-        self.root.title("Finance Tracker")
+        self.root.title("💰Finance Tracker")
         self.root.config(bg="#000000")  
-        self.base = manager()
+        self.mng = manager()
         self.mode=None
+        self.ch=Chart()
 
        
-        tk.Label(root,text="Finance Tracker 💲 ",font=("Segoe UI", 22, "bold"),fg="#00adb5",bg="#1e1e1e",pady=9).pack(fill="x")
+        tk.Label(root,text="💰 Finance Tracker 💰 ",font=("Segoe UI", 22, "bold"),fg="#00adb5",bg="#1e1e1e",pady=9).pack(fill="x")
         
        
         self.buttonsframe=tk.Frame(root,bg="#111010")
@@ -84,7 +95,12 @@ class GUI:
          #Delete Button
         deletebutton=tk.Button(self.buttonsframe,text="♻️ Delete Rows",command=self.delete_rows,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
         deletebutton.grid(row=0,column=3, padx=15, pady=5)
+         # Bulk Button
+        bulkbutton=tk.Button(self.buttonsframe,text="✖️ Bulk Insert ",command=self.bulk_insert,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
+        bulkbutton.grid(row=0,column=4,padx=15, pady=5)
 
+        chartbutn=tk.Button(self.buttonsframe,text="📈Show charts ",command=self.prepmonth,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
+        chartbutn.grid(row=0,column=5,padx=15, pady=5)
         
         self.input_container = tk.Frame(root, bg="#F3E7E7")
         self.input_container.pack(pady=10, fill="x")
@@ -95,6 +111,7 @@ class GUI:
         self.value_frame=tk.Frame(self.input_container, bg="#000000", bd=2)
         self.column2_frame=tk.Frame(self.input_container, bg="#000000",  bd=2)
         self.chvalue_frame=tk.Frame(self.input_container,bg="#000000",bd=2)
+        self.path_frame=tk.Frame(self.input_container,bg="#000000",bd=2)
         
         # Table Frame
         tk.Label(self.table_frame,text=" 📊 Table Name->",font=("Arial", 13,'bold'),fg="#eeeeee",bg="#080808").pack(side="left", padx=10, pady=10)
@@ -120,6 +137,11 @@ class GUI:
         tk.Label(self.chvalue_frame,text="🎯 WHERE Value->",font=("Arial",13,'bold'),fg="#eeeeee",bg="#0A0A0A").pack(side="left", padx=10, pady=10)
         self.chventry=tk.Entry(self.chvalue_frame,width=40,font=("Consolas",11),bg='#ffffff',fg="#000000", insertbackground="black", relief="solid", bd=2)
         self.chventry.pack(side="left", padx=10, pady=10)
+
+        # path Frame
+        tk.Label(self.path_frame,text="🛣️Path->",font=("Arial",13,'bold'),fg="#eeeeee",bg="#0A0A0A").pack(side="left", padx=10, pady=10)
+        self.bentry=tk.Entry(self.path_frame,width=40,font=("Consolas",11),bg='#ffffff',fg="#000000", insertbackground="black", relief="solid", bd=2)
+        self.bentry.pack(side="left", padx=10, pady=10)
         
         self.runbutton = tk.Button(self.root,text="🏃 Run",command=self.run_action,font=("Segoe UI", 13, "bold"),bg="#760da7",fg="black", bd=5, padx=20, pady=10) 
         self.runbutton.pack(pady=10)
@@ -133,7 +155,7 @@ class GUI:
     #Functions->
 
     def hides(self):
-        func= (self.table_frame, self.column2_frame, self.column_frame, self.value_frame, self.chvalue_frame)
+        func= (self.table_frame, self.column2_frame, self.column_frame, self.value_frame, self.chvalue_frame,self.path_frame)
         for f in func:
             f.pack_forget()
 
@@ -166,6 +188,12 @@ class GUI:
         self.column2_frame.pack(pady=5, padx=10)
         self.chvalue_frame.pack(pady=5, padx=10)
 
+    def bulk_insert(self):
+       self.hides()
+       self.mode='bulk'
+       self.table_frame.pack(pady=5,padx=10)
+       self.path_frame.pack(padx=5,pady=10)
+
 
     def run_action(self):
      if self.mode == 'read':
@@ -176,15 +204,17 @@ class GUI:
         self.run_insert()
      elif self.mode == 'delete':
         self.run_delete()
+     elif self.mode=='bulk':
+        self.run_bulk()
 
     def run_read(self):
      table = self.tbentry.get().strip()
      data = self.base.read_tables(table)
      self.output.delete(1.0, tk.END)
      if isinstance(data, pd.DataFrame):
-        self.output.insert(tk.END, data.to_string(index=False))
+        self.output.insert(tk.END, '🫵'+data.to_string(index=False))
      else:  
-        self.output.insert(tk.END, f"❌{data}")
+        self.output.insert(tk.END, f"{data}")
 
     
     def run_update(self):
@@ -196,7 +226,7 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.update_Tables(table, col, val, wcol, chval)
-        self.output.insert(tk.END, " Updated successfully")
+        self.output.insert(tk.END, "Updated successfully🫵")
      except Exception as ee:
         self.output.insert(tk.END, f" {ee}")
 
@@ -207,9 +237,9 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.insert_tables(table, [col], [val])
-        self.output.insert(tk.END, " Inserted successfully")
+        self.output.insert(tk.END, "Inserted successfully🫵")
      except Exception as e:
-        self.output.insert(tk.END, f" {e}")
+        self.output.insert(tk.END, f"{e}")
 
     def run_delete(self):
      table = self.tbentry.get().strip()
@@ -218,10 +248,32 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.delete_Rows(table, wcol, chval)
-        self.output.insert(tk.END, " Deleted successfully")
+        self.output.insert(tk.END, "Deleted successfully🫵")
      except Exception as e:
         self.output.insert(tk.END, f"{e}")
 
+    def run_bulk(self):
+        table=self.tbentry.get().strip()
+        csv=self.bentry.get().strip()
+        self.output.delete(1.0,END)
+        try:
+          self.base.bulk_insert(table,csv)
+          self.output.insert(tk.END,"Insertion Completed🫵")
+        except Exception as ee :
+           self.output.insert(tk.END,f"{ee}")
+
+    def prepmonth(self):
+       df =self.mng.read_tables("Transactions") 
+       df["amount_date"]=pd.to_datetime(df["amount_date"]) #<<<< converting string to datetime >>>> 
+       df["month"]=df['amount_date'].dt.strftime("%b")
+       w=df.groupby(["month","type"])['Amount'].sum().reset_index()
+       x=w.pivot(index='month',columns='type',values='Amount')
+       x=x.fillna(0)
+       x=x.reset_index()
+       self.ch.monthly_income_chart(x)
+       
+
+       
 
 
 
