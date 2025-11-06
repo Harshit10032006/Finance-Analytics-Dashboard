@@ -184,7 +184,7 @@ class GUI:
      if isinstance(data, pd.DataFrame):
         self.output.insert(tk.END, data.to_string(index=False))
      else:  
-        self.output.insert(tk.END, f"❌ {data}")
+        self.output.insert(tk.END, f"❌{data}")
 
     
     def run_update(self):
@@ -196,9 +196,9 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.update_Tables(table, col, val, wcol, chval)
-        self.output.insert(tk.END, "✅ Updated successfully")
+        self.output.insert(tk.END, " Updated successfully")
      except Exception as ee:
-        self.output.insert(tk.END, f"❌ {ee}")
+        self.output.insert(tk.END, f" {ee}")
 
     def run_insert(self):
      table = self.tbentry.get().strip()
@@ -207,9 +207,9 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.insert_tables(table, [col], [val])
-        self.output.insert(tk.END, "✅ Inserted successfully")
+        self.output.insert(tk.END, " Inserted successfully")
      except Exception as e:
-        self.output.insert(tk.END, f"❌ {e}")
+        self.output.insert(tk.END, f" {e}")
 
     def run_delete(self):
      table = self.tbentry.get().strip()
@@ -218,9 +218,9 @@ class GUI:
      self.output.delete(1.0, tk.END)
      try:
         self.base.delete_Rows(table, wcol, chval)
-        self.output.insert(tk.END, "✅ Deleted successfully")
+        self.output.insert(tk.END, " Deleted successfully")
      except Exception as e:
-        self.output.insert(tk.END, f"❌ {e}")
+        self.output.insert(tk.END, f"{e}")
 
 
 
