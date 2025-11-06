@@ -98,9 +98,15 @@ class GUI:
          # Bulk Button
         bulkbutton=tk.Button(self.buttonsframe,text="✖️ Bulk Insert ",command=self.bulk_insert,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
         bulkbutton.grid(row=0,column=4,padx=15, pady=5)
-
+        # monthly Income and expense chart button
         chartbutn=tk.Button(self.buttonsframe,text="📈Show charts ",command=self.prepmonth,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
         chartbutn.grid(row=0,column=5,padx=15, pady=5)
+        # account_type button
+        acbutton=tk.Button(self.buttonsframe,text="🖥️Show type",command=self.bnktype,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
+        acbutton.grid(row=1,column=0,padx=15, pady=5)
+        #month wise expense button
+        mnthbutn=tk.Button(self.buttonsframe,text="▶️Expense line",command=self.mnthwise_expense,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
+        mnthbutn.grid(row=1,column=1,padx=15, pady=5)
         
         self.input_container = tk.Frame(root, bg="#F3E7E7")
         self.input_container.pack(pady=10, fill="x")
@@ -271,6 +277,21 @@ class GUI:
        x=x.fillna(0)
        x=x.reset_index()
        self.ch.monthly_income_chart(x)
+
+    def bnktype(self):
+       self.ch.acpie_chart(self.mng.read_tables("Accounts"))
+
+    def mnthwise_expense(self):
+        df =self.mng.read_tables("Transactions") 
+        df["amount_date"]=pd.to_datetime(df["amount_date"]) 
+        df["month"]=df['amount_date'].dt.strftime("%b")
+        x=df[df["type"] == "Expense"]
+        w= x.groupby("month")["Amount"].sum().reset_index()
+        self.ch.monthwise_expense(w)
+
+
+       
+       
        
 
        
