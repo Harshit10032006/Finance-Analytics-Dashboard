@@ -215,7 +215,7 @@ class GUI:
 
     def run_read(self):
      table = self.tbentry.get().strip()
-     data = self.base.read_tables(table)
+     data = self.mng.read_tables(table)
      self.output.delete(1.0, tk.END)
      if isinstance(data, pd.DataFrame):
         self.output.insert(tk.END, '🫵'+data.to_string(index=False))
@@ -231,7 +231,7 @@ class GUI:
      chval = self.chventry.get().strip()
      self.output.delete(1.0, tk.END)
      try:
-        self.base.update_Tables(table, col, val, wcol, chval)
+        self.mng.update_Tables(table, col, val, wcol, chval)
         self.output.insert(tk.END, "Updated successfully🫵")
      except Exception as ee:
         self.output.insert(tk.END, f" {ee}")
@@ -242,7 +242,7 @@ class GUI:
      val   = self.vntry.get().strip()
      self.output.delete(1.0, tk.END)
      try:
-        self.base.insert_tables(table, [col], [val])
+        self.mng.insert_tables(table, [col], [val])
         self.output.insert(tk.END, "Inserted successfully🫵")
      except Exception as e:
         self.output.insert(tk.END, f"{e}")
@@ -253,7 +253,7 @@ class GUI:
      chval = self.chventry.get().strip()
      self.output.delete(1.0, tk.END)
      try:
-        self.base.delete_Rows(table, wcol, chval)
+        self.mng.delete_Rows(table, wcol, chval)
         self.output.insert(tk.END, "Deleted successfully🫵")
      except Exception as e:
         self.output.insert(tk.END, f"{e}")
@@ -263,7 +263,7 @@ class GUI:
         csv=self.bentry.get().strip()
         self.output.delete(1.0,END)
         try:
-          self.base.bulk_insert(table,csv)
+          self.mng.bulk_insert(table,csv)
           self.output.insert(tk.END,"Insertion Completed🫵")
         except Exception as ee :
            self.output.insert(tk.END,f"{ee}")
@@ -288,6 +288,9 @@ class GUI:
         x=df[df["type"] == "Expense"]
         w= x.groupby("month")["Amount"].sum().reset_index()
         self.ch.monthwise_expense(w)
+
+
+    
 
 
        
