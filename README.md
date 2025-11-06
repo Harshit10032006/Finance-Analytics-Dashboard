@@ -21,7 +21,6 @@ This Finance Tracker application
 
 
 - 📈 *Financial Analytics*: Monthly reports, spending trends, savings rate
-- 
 - 💰 *Budget Tracking*: Set budgets and monitor spending vs. targets
 - 🔍 *Advanced Filtering*: Search and filter transactions by date, category, amount
 - 📄 *PDF Reports*: Generate monthly financial reports
