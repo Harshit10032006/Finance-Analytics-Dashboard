@@ -7,7 +7,6 @@ A GUI desktop application for managing personal finances, built with Python, SQL
 This Finance Tracker application 
 ## Features
 
-### Current Features 
 - *CRUD Operations*: Create, Read, Update, and Delete financial records
 - *Database Management*: SQL Server backend with normalized schema
 - *User-Friendly GUI*: Dark-themed interface built with Tkinter
