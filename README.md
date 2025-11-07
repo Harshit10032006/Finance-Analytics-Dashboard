@@ -16,19 +16,11 @@ This Finance Tracker application
 - *Data Visualization*: Interactive charts and graphs using Matplotlib
 - *CSV Import*: Bulk import data in tables
 
-  ### Yet to be added
-
-
-- 📈 *Financial Analytics*: Monthly reports, spending trends, savings rate
-- 💰 *Budget Tracking*: Set budgets and monitor spending vs. targets
-- 🔍 *Advanced Filtering*: Search and filter transactions by date, category, amount
-- 📄 *PDF Reports*: Generate monthly financial reports
-
 ## 🛠️ Tech used
 
 - *Language*: Python 
 - *Database*: Microsoft SQL Server
 - *GUI Framework*: Tkinter (tk)
-- *Libraries*: Pandas, pyodbc, Matplotlib, Seaborn
+- *Libraries*: Pandas, pyodbc, Matplotlib
 
 
