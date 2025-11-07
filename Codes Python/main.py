@@ -107,6 +107,9 @@ class GUI:
         #month wise expense button
         mnthbutn=tk.Button(self.buttonsframe,text="▶️Expense line",command=self.mnthwise_expense,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
         mnthbutn.grid(row=1,column=1,padx=15, pady=5)
+        #Top 5 category expense wise 
+        catbutn=tk.Button(self.buttonsframe,text="🔝5️⃣Category",command=self.top5,font=("Segoe UI", 11, "bold"),bg="#00adb5",fg="#ffffff",activebackground="#e7ffff",activeforeground="black",bd=10,padx=5,pady=5)
+        catbutn.grid(row=1,column=2,padx=15, pady=5)
         
         self.input_container = tk.Frame(root, bg="#F3E7E7")
         self.input_container.pack(pady=10, fill="x")
@@ -151,6 +154,7 @@ class GUI:
         
         self.runbutton = tk.Button(self.root,text="🏃 Run",command=self.run_action,font=("Segoe UI", 13, "bold"),bg="#760da7",fg="black", bd=5, padx=20, pady=10) 
         self.runbutton.pack(pady=10)
+
         text_frame = tk.Frame(root, bg="#970000")
         text_frame.pack(padx=10, pady=10, fill="both", expand=True)
         
@@ -270,7 +274,7 @@ class GUI:
 
     def prepmonth(self):
        df =self.mng.read_tables("Transactions") 
-       df["amount_date"]=pd.to_datetime(df["amount_date"]) #<<<< converting string to datetime >>>> 
+       df["amount_date"]=pd.to_datetime(df["amount_date"]) #<<<< converting string to datetime >>>> pandas fetch data as an string through sql 
        df["month"]=df['amount_date'].dt.strftime("%b")
        w=df.groupby(["month","type"])['Amount'].sum().reset_index()
        x=w.pivot(index='month',columns='type',values='Amount')
@@ -282,12 +286,22 @@ class GUI:
        self.ch.acpie_chart(self.mng.read_tables("Accounts"))
 
     def mnthwise_expense(self):
+
         df =self.mng.read_tables("Transactions") 
         df["amount_date"]=pd.to_datetime(df["amount_date"]) 
         df["month"]=df['amount_date'].dt.strftime("%b")
         x=df[df["type"] == "Expense"]
         w= x.groupby("month")["Amount"].sum().reset_index()
         self.ch.monthwise_expense(w)
+
+    def top5(self):
+       t =self.mng.read_tables("Transactions")
+       c = self.mng.read_tables("Categories")
+       x =t[t["type"] == "Expense"] # filter only expense >>
+       merge = x.merge(c,on="category_id") # join the tables >>
+       g = merge.groupby("category_name")["Amount"].sum().reset_index()
+       top5 =g.sort_values("Amount").head(5)
+       self.ch.top5(top5)
 
 
     
