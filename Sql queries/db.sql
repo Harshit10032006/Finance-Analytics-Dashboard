@@ -24,7 +24,8 @@ CREATE TABLE Transactions (
     category_id INT,
     amount_date DATETIME,
     descriptions NVARCHAR(400),
-    type NVARCHAR(200));
+    type NVARCHAR(200),
+    Amount DECIMAL (10,2));
 
 CREATE TABLE Budgets (
     budget_id INT PRIMARY KEY,
