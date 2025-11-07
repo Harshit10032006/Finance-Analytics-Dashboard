@@ -15,7 +15,7 @@ This Finance Tracker application
 - *Data Visualization*: Interactive charts and graphs using Matplotlib
 - *CSV Import*: Bulk import data in tables
 
-## 🛠️ Tech used
+## 🛠️Tech used
 
 - *Language*: Python 
 - *Database*: Microsoft SQL Server
